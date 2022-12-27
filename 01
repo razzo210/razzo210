@@ -1,0 +1,32 @@
+import time
+from selenium import webdriver
+
+# Inizializza il driver del browser
+driver = webdriver.Chrome()
+
+# Apri la pagina di WhatsApp Web
+driver.get('https://web.whatsapp.com/')
+
+# Aspetta che l'utente scansioni il codice QR per autenticarsi su WhatsApp Web
+input("Scansiona il codice QR e premi INVIO quando sei pronto: ")
+
+# Seleziona il contatto o il gruppo a cui inviare il messaggio
+contact = driver.find_element_by_xpath('//span[contains(text(), "Nome del contatto o del gruppo")]')
+contact.click()
+
+# Invia il messaggio di auguri alla mezzanotte dell'ultimo giorno dell'anno
+while True:
+    # Verifica se è la mezzanotte dell'ultimo giorno dell'anno
+    current_time = time.localtime()
+    if current_time.tm_year == 2021 and current_time.tm_mon == 12 and current_time.tm_mday == 31 and current_time.tm_hour == 0 and current_time.tm_min == 0:
+        # Invia il messaggio di auguri
+        message_box = driver.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div[2]/div/div[2]')
+        message_box.send_keys("Auguri di un felice anno nuovo!")
+        send_button = driver.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div[3]/button')
+        send_button.click()
+        break
+    # Aspetta 1 minuto prima di verificare di nuovo
+    time.sleep(60)
+
+# Chiudi il browser
+driver.quit()
